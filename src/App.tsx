@@ -4,13 +4,15 @@ import { logout, useAuthSelector } from './slices/authSlice'
 
 function App() {
   const dispatch = useAppDispatch()
-  const { token } = useAuthSelector()
+  const { token, error, isLoading } = useAuthSelector()
 
   return (
-    <div className="App">
-      <p>Token: {token}</p>
+    <div>
+      <h1>Token: {token}</h1>
       <button onClick={() => dispatch($loginRequested({ user: 'Jhon', password: '123' }))}>Login</button>
       <button onClick={() => dispatch(logout())}>Logout</button>
+      {isLoading && <p>Loading...</p>}
+      {Boolean(error) && <p style={{ color: 'red' }}>ERROR!</p>}
     </div>
   )
 }

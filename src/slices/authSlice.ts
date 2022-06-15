@@ -4,12 +4,14 @@ import { useAppSelector } from "../store";
 
 interface AuthState {
     token: string | null
-    error: null | unknown
+    error: null | unknown,
+    isLoading: boolean
 }
 
 const initialState: AuthState = {
     token: null,
-    error: null
+    error: null,
+    isLoading: false
 }
 
 export const authSlice = createSlice({
@@ -25,10 +27,17 @@ export const authSlice = createSlice({
         },
         reject: (state, action: PayloadAction<unknown>) => {
             state.error = action.payload
+        },
+        setLoading(state) {
+            state.isLoading = true
+            state.error = null
+        },
+        resetLoading(state) {
+            state.isLoading = false
         }
     }
 })
 
-export const { setToken, reject, logout } = authSlice.actions
+export const { setToken, reject, logout, setLoading, resetLoading } = authSlice.actions
 export const useAuthSelector = () => useAppSelector(state => state.auth)
 export default authSlice.reducer
