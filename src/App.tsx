@@ -1,18 +1,23 @@
 import { useAppDispatch } from './store'
 import { $loginRequested } from './sagas/non-blocking'
 import { logout, useAuthSelector } from './slices/authSlice'
+import {
+  $startBackgroundSync,
+  $stopBackgroundSync,
+} from './sagas/task-cancellation'
+import { useBackgroundSyncSelector } from './slices/bgSlice'
 
 function App() {
   const dispatch = useAppDispatch()
-  const { token, error, isLoading } = useAuthSelector()
+  const { status, data, error } = useBackgroundSyncSelector()
 
   return (
     <div>
-      <h1>Token: {token}</h1>
-      <button onClick={() => dispatch($loginRequested({ user: 'Jhon', password: '123' }))}>Login</button>
-      <button onClick={() => dispatch(logout())}>Logout</button>
-      {isLoading && <p>Loading...</p>}
-      {Boolean(error) && <p style={{ color: 'red' }}>ERROR!</p>}
+      <button onClick={() => dispatch($startBackgroundSync())}>Login</button>
+      <button onClick={() => dispatch($stopBackgroundSync())}>Logout</button>
+      <p>{status}...</p>
+      <pre>Data: {JSON.stringify(data, null, 2)}</pre>
+      <p style={{ color: 'red' }}>Error: {JSON.stringify(error)}</p>
     </div>
   )
 }
