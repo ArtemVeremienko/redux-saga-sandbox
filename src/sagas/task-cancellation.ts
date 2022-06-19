@@ -19,7 +19,7 @@ import * as api from '../utils/api'
 export const $startBackgroundSync = createAction('sagas/startBackgroundSync')
 export const $stopBackgroundSync = createAction('sagas/stopBackgroundSync')
 
-function* bgSync(): SagaIterator {
+export function* bgSync(): SagaIterator {
   try {
     while (true) {
       yield put(requestStarted())
